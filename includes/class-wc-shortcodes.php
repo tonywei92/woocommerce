@@ -65,15 +65,24 @@ class WC_Shortcodes {
 			'after'  => null,
 		)
 	) {
-		ob_start();
+		$use_wrapper = apply_filters('woocommerce_shortcode_wrapper', true);
+		if($user_wrapper){
+			ob_start();
 
-		// @codingStandardsIgnoreStart
-		echo empty( $wrapper['before'] ) ? '<div class="' . esc_attr( $wrapper['class'] ) . '">' : $wrapper['before'];
-		call_user_func( $function, $atts );
-		echo empty( $wrapper['after'] ) ? '</div>' : $wrapper['after'];
-		// @codingStandardsIgnoreEnd
+			// @codingStandardsIgnoreStart
+			echo empty( $wrapper['before'] ) ? '<div class="' . esc_attr( $wrapper['class'] ) . '">' : $wrapper['before'];
+			call_user_func( $function, $atts );
+			echo empty( $wrapper['after'] ) ? '</div>' : $wrapper['after'];
+			// @codingStandardsIgnoreEnd
 
-		return ob_get_clean();
+			return ob_get_clean();
+		}
+		else{
+			ob_start();
+			call_user_func( $function, $atts );
+			return ob_get_clean();
+		}
+		
 	}
 
 	/**
